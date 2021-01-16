@@ -3,16 +3,7 @@ import urllib
 
 from alfred_pastebin import exceptions
 from alfred_pastebin.variables import *
-
-
-# functions
-def return_result(result):
-    json_str = json.dumps(result)
-    sys.stdout.write(json_str)
-
-
-def get_name_text(query):
-    return DEFAULT_NAME if query is None else query
+from alfred_pastebin.utils import *
 
 
 def get_language_text(query):
@@ -45,7 +36,33 @@ def get_permission_code(permission):
     raise exceptions.InvalidPermission(permission)
 
 
-def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, api_user_key=None):
+def get_api_user_key():
+    if CACHED_USER_KEY:
+        return CACHED_USER_KEY
+
+    if not API_USER_NAME or not API_USER_PASSWORD:
+        return
+
+    payload = {
+        'api_dev_key': API_DEV_KEY,
+        'api_user_name': API_USER_NAME,
+        'api_user_password': API_USER_PASSWORD
+    }
+
+    response = urllib.urlopen(API_ENDPOINT + 'api_login.php', data=urllib.urlencode(payload))
+
+    if not response:
+        raise exceptions.InvalidLoginCredential
+
+    api_user_key = response.read()
+
+    # cached API user key
+    save_workflow_variable('CACHED_USER_KEY', api_user_key)
+
+    return api_user_key
+
+
+def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION):
     payload = {
         'api_dev_key': API_DEV_KEY,
         'api_option': 'paste',
@@ -58,6 +75,9 @@ def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERM
         payload.update({'api_paste_name': name})
     if language is not None:
         payload.update({'api_paste_format': language})
+
+    # get API user key
+    api_user_key = get_api_user_key()
     if api_user_key:
         payload.update({'api_user_key': api_user_key})
 
@@ -76,17 +96,6 @@ def get_filter_result():
                 {
                     'title': 'No API_DEV_KEY!',
                     'subtitle': 'Please check your workflow variable.'
-                }
-            ]
-        }
-        return_result(result)
-
-    elif not API_USER_KEY:
-        result = {
-            'items': [
-                {
-                    'title': 'No API_USER_KEY!',
-                    'subtitle': 'Please check workflow variable.'
                 }
             ]
         }
@@ -121,7 +130,7 @@ def get_filter_result():
                 'items': [
                     {
                         'title': 'Invalid language `%s`!' % e,
-                        'subtitle': 'Please check your input, you can leave it empty if you not sure.'
+                        'subtitle': 'Please check your input. You can leave it empty if you not sure.'
                     }
                 ]
             }
@@ -131,6 +140,15 @@ def get_filter_result():
                     {
                         'title': 'Invalid permission `%s`!' % e,
                         'subtitle': 'Please check your workflow variable.'
+                    }
+                ]
+            }
+        except exceptions.InvalidLoginCredential as e:
+            result = {
+                'items': [
+                    {
+                        'title': 'Invalid login credential!' % e,
+                        'subtitle': 'Please check your workflow variable. You can leave it empty to paste as a guest.'
                     }
                 ]
             }
@@ -148,8 +166,7 @@ def get_paste_result():
         clipboard,
         name=name,
         language=language,
-        permission=permission,
-        api_user_key=API_USER_KEY
+        permission=permission
     )
 
     sys.stdout.write(response.read() if response else '')

@@ -4,3 +4,7 @@ class InvalidLanguage(Exception):
 
 class InvalidPermission(Exception):
     pass
+
+
+class InvalidLoginCredential(Exception):
+    pass

@@ -14,7 +14,9 @@ EXPIRE_DATE = os.environ.get('EXPIRE_DATE', '1W')
 DEFAULT_PERMISSION = os.environ.get('DEFAULT_PERMISSION', 'public')
 CMD_PERMISSION = os.environ.get('CMD_PERMISSION', 'unlisted')
 API_DEV_KEY = os.environ.get('API_DEV_KEY')
-API_USER_KEY = os.environ.get('API_USER_KEY')
+CACHED_USER_KEY = os.environ.get('CACHED_USER_KEY')
+API_USER_NAME = os.environ.get('API_USER_NAME')
+API_USER_PASSWORD = os.environ.get('API_USER_PASSWORD')
 
 
 # load language list
