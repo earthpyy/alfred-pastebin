@@ -1,5 +1,5 @@
 # Alfred Pastebin
-Automatically create a new paste in Pastebin.com
+Automatically create a new paste in Pastebin.com from your clipboard
 
 
 ## Requirements
