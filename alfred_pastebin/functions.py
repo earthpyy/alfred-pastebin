@@ -10,8 +10,10 @@ def return_result(result):
     json_str = json.dumps(result)
     sys.stdout.write(json_str)
 
+
 def get_name_text(query):
     return DEFAULT_NAME if query is None else query
+
 
 def get_language_text(query):
     if query is None:
@@ -23,6 +25,7 @@ def get_language_text(query):
 
     return language_name
 
+
 def get_subtitle(name_query, language_query, modified=False):
     name = get_name_text(name_query)
     language = get_language_text(language_query)
@@ -30,8 +33,9 @@ def get_subtitle(name_query, language_query, modified=False):
 
     return 'Name: ' + name + ', Language: ' + language + modified_text
 
-# see: https://pastebin.com/doc_api#7
+
 def get_permission_code(permission):
+    # see: https://pastebin.com/doc_api#7
     if permission == 'public':
         return 0
     elif permission == 'unlisted':
@@ -39,6 +43,7 @@ def get_permission_code(permission):
     elif permission == 'private':
         return 2
     raise exceptions.InvalidPermission(permission)
+
 
 def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, api_user_key=None):
     payload = {
