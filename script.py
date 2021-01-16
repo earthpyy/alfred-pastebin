@@ -4,13 +4,13 @@ import sys
 import urllib
 
 
-# variables (more info: https://pastebin.com/api)
+# variables (more info: https://pastebin.com/doc_api)
 API_ENDPOINT = 'https://pastebin.com/api/'
 LANGUAGE_FILE = 'language.json'
 DEFAULT_NAME = 'Untitled'
 DEFAULT_PERMISSION = 'public'
 CMD_PERMISSION = 'unlisted'
-DEFAULT_EXPIRE_DATE = '1W'  # see: https://pastebin.com/api#6
+DEFAULT_EXPIRE_DATE = '1W'  # see: https://pastebin.com/doc_api#6
 
 
 # load language list
@@ -43,7 +43,7 @@ def get_subtitle(name_query, language_query, modified=False):
 
 	return 'Name: ' + name + ', Language: ' + language + modified_text
 
-# see: https://pastebin.com/api#7
+# see: https://pastebin.com/doc_api#7
 def get_permission_code(permission):
 	if permission == 'public':
 		return 0
