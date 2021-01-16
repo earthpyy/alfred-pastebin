@@ -14,6 +14,9 @@ DEFAULT_NAME = os.environ.get('DEFAULT_NAME', 'Untitled')
 EXPIRE_DATE = os.environ.get('EXPIRE_DATE', '1W')  # see: https://pastebin.com/doc_api#6
 DEFAULT_PERMISSION = os.environ.get('DEFAULT_PERMISSION', 'public')
 CMD_PERMISSION = os.environ.get('CMD_PERMISSION', 'unlisted')
+API_DEV_KEY = os.environ.get('API_DEV_KEY')
+API_USER_KEY = os.environ.get('API_USER_KEY')
+
 
 
 # load language list
@@ -23,8 +26,8 @@ with open(LANGUAGE_FILE, 'r') as f:
 
 # functions
 def return_result(result):
-    json_str = json.dumps(result)
-    sys.stdout.write(json_str)
+	json_str = json.dumps(result)
+	sys.stdout.write(json_str)
 
 def get_name_text(query):
 	return DEFAULT_NAME if query is None else query
@@ -57,12 +60,8 @@ def get_permission_code(permission):
 	raise ValueError
 
 def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, api_user_key=None):
-    api_dev_key = os.environ.get('API_DEV_KEY')
-    if not api_dev_key:
-        raise ValueError('No `API_DEV_KEY` defined!')
-
 	payload = {
-		'api_dev_key': api_dev_key,
+		'api_dev_key': API_DEV_KEY,
 		'api_option': 'paste',
 		'api_paste_code': code,
 		'api_paste_private': get_permission_code(permission),
@@ -127,14 +126,13 @@ elif command == 'paste':
 	name = os.environ.get('name', DEFAULT_NAME)
 	language = os.environ.get('language', None)
 	permission = os.environ.get('permission', DEFAULT_PERMISSION)
-	api_user_key = os.environ.get('API_USER_KEY', None)
 
 	response = create_paste(
 		clipboard,
 		name=name,
 		language=language,
 		permission=permission,
-		api_user_key=api_user_key
+		api_user_key=API_USER_KEY
 	)
 
 	sys.stdout.write(response.read() if response else '')
