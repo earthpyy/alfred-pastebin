@@ -24,5 +24,5 @@ pb [name] [language]
 - Ability to login and gain `api_user_key`
 
 
-## Author
+## Contributors
 Preeti Yuankrathok ([@earthpyy](https://github.com/earthpyy))
