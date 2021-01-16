@@ -4,13 +4,16 @@ import sys
 import urllib
 
 
-# variables (more info: https://pastebin.com/doc_api)
 API_ENDPOINT = 'https://pastebin.com/api/'
 LANGUAGE_FILE = 'language.json'
-DEFAULT_NAME = 'Untitled'
-DEFAULT_PERMISSION = 'public'
-CMD_PERMISSION = 'unlisted'
-DEFAULT_EXPIRE_DATE = '1W'  # see: https://pastebin.com/doc_api#6
+
+# variables
+# (more info: https://pastebin.com/doc_api)
+# (change these in workflow variables)
+DEFAULT_NAME = os.environ.get('DEFAULT_NAME', 'Untitled')
+EXPIRE_DATE = os.environ.get('EXPIRE_DATE', '1W')  # see: https://pastebin.com/doc_api#6
+DEFAULT_PERMISSION = os.environ.get('DEFAULT_PERMISSION', 'public')
+CMD_PERMISSION = os.environ.get('CMD_PERMISSION', 'unlisted')
 
 
 # load language list
@@ -53,8 +56,9 @@ def get_permission_code(permission):
 		return 2
 	raise ValueError
 
-def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, user_key=None):
+def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, api_user_key=None):
     api_dev_key = os.environ.get('API_DEV_KEY')
+    print(api_dev_key)
     if not api_dev_key:
         raise ValueError('No `API_DEV_KEY` defined!')
 
@@ -63,15 +67,15 @@ def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERM
 		'api_option': 'paste',
 		'api_paste_code': code,
 		'api_paste_private': get_permission_code(permission),
-		'api_paste_expire_date': os.environ.get('EXPIRE_DATE', DEFAULT_EXPIRE_DATE)
+		'api_paste_expire_date': EXPIRE_DATE
 	}
 
 	if name is not None:
 		payload.update({'api_paste_name': name})
 	if language is not None:
 		payload.update({'api_paste_format': language})
-	if user_key is not None:
-		payload.update({'api_user_key': user_key})
+	if api_user_key is not None:
+		payload.update({'api_user_key': api_user_key})
 
 	return urllib.urlopen(API_ENDPOINT + 'api_post.php', data=urllib.urlencode(payload))
 
@@ -124,14 +128,14 @@ elif command == 'paste':
 	name = os.environ.get('name', DEFAULT_NAME)
 	language = os.environ.get('language', None)
 	permission = os.environ.get('permission', DEFAULT_PERMISSION)
-	user_key = os.environ.get('USER_KEY', None)
+	api_user_key = os.environ.get('API_USER_KEY', None)
 
 	response = create_paste(
 		clipboard,
 		name=name,
 		language=language,
 		permission=permission,
-		user_key=user_key
+		api_user_key=api_user_key
 	)
 
-	sys.stdout.write(response.read())
+	sys.stdout.write(response.read() if response else 'No response!')
