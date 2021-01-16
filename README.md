@@ -3,7 +3,7 @@ Automatically create a new paste in Pastebin.com
 
 
 ## Requirements
-- Alfred 3
+- Alfred 3+
 - Powerpack
 - Python 2+
 
