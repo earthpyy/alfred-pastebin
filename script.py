@@ -5,7 +5,6 @@ import urllib
 
 
 # variables (more info: https://pastebin.com/api)
-API_DEV_KEY = '***REMOVED***'
 API_ENDPOINT = 'https://pastebin.com/api/'
 LANGUAGE_FILE = 'language.json'
 DEFAULT_NAME = 'Untitled'
@@ -55,8 +54,12 @@ def get_permission_code(permission):
 	raise ValueError
 
 def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, user_key=None):
+    api_dev_key = os.environ.get('API_DEV_KEY')
+    if not api_dev_key:
+        raise ValueError('No `API_DEV_KEY` defined!')
+
 	payload = {
-		'api_dev_key': API_DEV_KEY,
+		'api_dev_key': api_dev_key,
 		'api_option': 'paste',
 		'api_paste_code': code,
 		'api_paste_private': get_permission_code(permission),
