@@ -1,4 +1,8 @@
 # Alfred Pastebin
+
+<img src="https://img.shields.io/github/v/release/earthpyy/alfred-pastebin">
+<img src="https://img.shields.io/github/checks-status/earthpyy/alfred-pastebin/master">
+
 Automatically create a new paste in Pastebin.com from your clipboard
 
 
