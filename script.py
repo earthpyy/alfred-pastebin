@@ -18,7 +18,6 @@ API_DEV_KEY = os.environ.get('API_DEV_KEY')
 API_USER_KEY = os.environ.get('API_USER_KEY')
 
 
-
 # load language list
 with open(LANGUAGE_FILE, 'r') as f:
 	LANGUAGES = json.load(f)
