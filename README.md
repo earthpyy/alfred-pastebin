@@ -46,5 +46,5 @@ pb [name] [language]
 | `EXPIRE_DATE` | `1W` | Yes | Paste expiration date ([available value](https://pastebin.com/doc_api#6)) |
 
 
-## Contributors
-Preeti Yuankrathok ([@earthpyy](https://github.com/earthpyy))
+## Like it?
+<a href="https://paypal.me/earthpyy" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
