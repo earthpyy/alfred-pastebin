@@ -58,7 +58,6 @@ def get_permission_code(permission):
 
 def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, api_user_key=None):
     api_dev_key = os.environ.get('API_DEV_KEY')
-    print(api_dev_key)
     if not api_dev_key:
         raise ValueError('No `API_DEV_KEY` defined!')
 
@@ -138,4 +137,4 @@ elif command == 'paste':
 		api_user_key=api_user_key
 	)
 
-	sys.stdout.write(response.read() if response else 'No response!')
+	sys.stdout.write(response.read() if response else '')
