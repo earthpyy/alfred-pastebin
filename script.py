@@ -3,6 +3,8 @@ import os
 import sys
 import urllib
 
+from .exceptions import InvalidLanguage, InvalidPermission, NoApiDevKey, NoApiUserKey
+
 
 API_ENDPOINT = 'https://pastebin.com/api/'
 LANGUAGE_FILE = 'language.json'
@@ -37,7 +39,7 @@ def get_language_text(query):
 
 	language_name = LANGUAGES.get(query, None)
 	if language_name is None:
-		raise ValueError(query)
+		raise InvalidLanguage(query)
 
 	return language_name
 
@@ -56,7 +58,7 @@ def get_permission_code(permission):
 		return 1
 	elif permission == 'private':
 		return 2
-	raise ValueError
+	raise InvalidPermission(permission)
 
 def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERMISSION, api_user_key=None):
 	payload = {
@@ -108,12 +110,39 @@ if command == 'filter':
 				}
 			]
 		}
-	except ValueError:
+	except InvalidLanguage as e:
 		result = {
 			'items': [
 				{
-					'title': 'Invalid language!',
-					'subtitle': 'Please check your input'
+					'title': 'Invalid language `%s`!' % e,
+					'subtitle': 'Please check your input, you can leave it empty if you not sure.'
+				}
+			]
+		}
+	except InvalidPermission as e:
+		result = {
+			'items': [
+				{
+					'title': 'Invalid permission `%s`!' % e,
+					'subtitle': 'Please check your workflow variable.'
+				}
+			]
+		}
+	except NoApiDevKey as e:
+		result = {
+			'items': [
+				{
+					'title': 'No API_DEV_KEY!',
+					'subtitle': 'Please check your workflow variable.'
+				}
+			]
+		}
+	except NoApiUserKey as e:
+		result = {
+			'items': [
+				{
+					'title': 'No API_USER_KEY!',
+					'subtitle': 'Please check workflow variable.'
 				}
 			]
 		}
