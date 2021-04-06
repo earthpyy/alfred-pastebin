@@ -39,8 +39,6 @@ pb [name] [language]
 
 
 ### Workflow Environment Variables
-- USER_KEY : 'api_user_key' of Pastebin account
-- EXPIRE_DATE : default expire date of a paste (default: 1 week)
 
 | Name | Default | Required | Description |
 | ---- | ------- | -------- | ----------- |
