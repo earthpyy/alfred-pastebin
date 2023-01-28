@@ -1,7 +1,7 @@
 # Alfred Pastebin
 <p>
 <img src="https://img.shields.io/github/v/release/earthpyy/alfred-pastebin">
-<img src="https://img.shields.io/github/workflow/status/earthpyy/alfred-pastebin/Python%20application">
+<img src="https://img.shields.io/github/actions/workflow/status/earthpyy/alfred-pastebin/python-app.yml?branch=master">
 </p>
 
 </p>
