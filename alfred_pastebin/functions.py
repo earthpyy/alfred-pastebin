@@ -1,5 +1,6 @@
 import sys
-import urllib
+from urllib.request import urlopen
+from urllib.parse import urlencode
 
 from alfred_pastebin import exceptions
 from alfred_pastebin.variables import *
@@ -49,7 +50,7 @@ def get_api_user_key():
         'api_user_password': API_USER_PASSWORD
     }
 
-    response = urllib.urlopen(API_ENDPOINT + 'api_login.php', data=urllib.urlencode(payload))
+    response = urlopen(API_ENDPOINT + 'api_login.php', data=urlencode(payload).encode())
 
     if not response:
         raise exceptions.InvalidLoginCredential
@@ -81,7 +82,7 @@ def create_paste(code, name=DEFAULT_NAME, language=None, permission=DEFAULT_PERM
     if api_user_key:
         payload.update({'api_user_key': api_user_key})
 
-    return urllib.urlopen(API_ENDPOINT + 'api_post.php', data=urllib.urlencode(payload))
+    return urlopen(API_ENDPOINT + 'api_post.php', data=urlencode(payload).encode())
 
 
 def get_filter_result():
@@ -169,4 +170,4 @@ def get_paste_result():
         permission=permission
     )
 
-    sys.stdout.write(response.read() if response else '')
+    sys.stdout.write(response.read().decode() if response else '')
